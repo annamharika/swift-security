@@ -20,16 +20,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         valuesTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReUseIdentifier)
         print("getAllKeyChainItemsOfClass  \(keyChainWrapperObj.getAllKeyChainItemsOfClass("serviceName"))")
-       
-        
         // Do any additional setup after loading the view, typically from a nib.
     }
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isTranslucent = false
         self.keychainValues.removeAllObjects()
-        self.keychainValues.addObjects(from: keyChainWrapperObj.getAllKeyChainItemsOfClass("serviceName") as! [Any])
+        guard let keychainValue = keyChainWrapperObj.getAllKeyChainItemsOfClass("serviceName") as? [Any] else {
+            return
+        }
+        self.keychainValues.addObjects(from: keychainValue)
         self.valuesTableView.reloadData()
-        
     }
     // MARK: - Tableview data source methods
     /// Asks the data source to return the number of sections in the table view.
@@ -52,7 +52,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         /// create a new cell if needed or reuse an old one
         let cell: UITableViewCell = tableView.dequeueReusableCell(
             withIdentifier: cellReUseIdentifier) as UITableViewCell!
-        cell.textLabel?.text = ((self.keychainValues.object(at: indexPath.row) as AnyObject).value(forKey: "name")  as? String)
+        cell.textLabel?.text =
+            ((self.keychainValues.object(at: indexPath.row) as AnyObject).value(forKey: "name")  as? String)
         cell.selectionStyle = .none
         return cell
     }
@@ -61,7 +62,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             "AddValuesViewController") as? AddValuesViewController {
             if let navigator = navigationController {
                 addValues.fromEdit = true
-                addValues.userName = ((self.keychainValues.object(at: indexPath.row) as AnyObject).value(forKey: "name")  as? String)!
+                addValues.userName =
+                    ((self.keychainValues.object(at: indexPath.row) as AnyObject).value(forKey: "name")  as? String)!
                 navigator.pushViewController(addValues, animated: true)
             }
         }
@@ -78,7 +80,4 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
-

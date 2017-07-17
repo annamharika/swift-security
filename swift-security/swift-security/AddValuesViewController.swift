@@ -21,7 +21,8 @@ class AddValuesViewController: UIViewController {
         super.viewDidLoad()
         if fromEdit {
             self.nameTextField.text = self.userName
-            self.passwordTextField.text = keyChainWrapperObj.loadPassword(accountname: self.userName as NSString)! as String
+            self.passwordTextField.text =
+                keyChainWrapperObj.loadPassword(accountname: self.userName as NSString)! as String
             self.password = self.passwordTextField.text!
         }
 
@@ -32,15 +33,16 @@ class AddValuesViewController: UIViewController {
         guard let userPwd = passwordTextField.text else { return }
         if fromEdit {
             if self.userName == self.nameTextField.text {
-                self.keyChainWrapperObj.updatePassword(accountname: self.nameTextField.text! as NSString, password: self.passwordTextField.text! as NSString)
-            }
-            else {
+                self.keyChainWrapperObj.updatePassword(
+                accountname: self.nameTextField.text! as NSString, password: self.passwordTextField.text! as NSString)
+            } else {
                 self.keyChainWrapperObj.renameAccount(self.nameTextField.text!, self.userName)
-//                self.keyChainWrapperObj.savePassword(accountname: self.nameTextField.text! as NSString, password: self.passwordTextField.text! as NSString)
-                 self.keyChainWrapperObj.updatePassword(accountname: self.nameTextField.text! as NSString, password: self.passwordTextField.text! as NSString)
+                //self.keyChainWrapperObj.savePassword(
+                //accountname: self.nameTextField.text! as NSString, password: self.passwordTextField.text! as NSString)
+                 self.keyChainWrapperObj.updatePassword(
+                 accountname: self.nameTextField.text! as NSString, password: self.passwordTextField.text! as NSString)
             }
-        }
-        else {
+        } else {
             keyChainWrapperObj.savePassword(accountname: userName as NSString, password: userPwd as NSString)
         }
         self.navigationController?.popViewController(animated: false)
@@ -51,8 +53,6 @@ class AddValuesViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
     /*
     // MARK: - Navigation
 
